@@ -95,43 +95,18 @@
 
             let myString = contentA;
             document.getElementById("myParagraph").innerHTML = myString;
-            // const blobA = new Blob([contentA], { type: 'text/plain' });
 
-            // const titleA = `${formattedDate} FeRh ${sampleID} - R vs Theta - 400K, 200K, 150K - ${sampleField}T - fast`;
+            const blobA = new Blob([contentA], { type: 'text/plain' });
 
-            // const a = document.createElement('a');
-            // a.href = URL.createObjectURL(blobA);
-            // a.download = titleA + ".txt";
+            const titleA = `${formattedDate} FeRh ${sampleID} - R vs Theta - 400K, 200K, 150K - ${sampleField}T - fast`;
 
-            // a.click();
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blobA);
+            a.download = titleA + ".txt";
 
-            // URL.revokeObjectURL(a.href);
+            a.click();
 
-
-
-
-
-
-
-
-            // // Get the content from the textarea
-            // const content = document.getElementById('textContent').value;
-
-            // // Create a Blob from the content
-            // const blob = new Blob([content], { type: 'text/plain' });
-
-            // // Create a link element
-            // const a = document.createElement('a');
-            // a.href = URL.createObjectURL(blob);
-            // a.download = 'myfile.txt'; // Default filename
-
-            // // Programmatically click the link to trigger the download
-            // a.click();
-
-            // // Cleanup
-            // URL.revokeObjectURL(a.href);
-
-
+            URL.revokeObjectURL(a.href);
         }
     </script>
 </body>
