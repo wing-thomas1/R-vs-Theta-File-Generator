@@ -93,7 +93,7 @@
             
             const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, Field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
 
-            const blob = new Blob([content], { type: 'text/plain' });
+            const blob = new Blob([contentA], { type: 'text/plain' });
 
             const title = `${formattedDate} FeRh ${sampleID} - R vs Theta - 400K, 200K, 150K - ${sampleField}T - fast`;
 
