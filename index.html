@@ -27,7 +27,7 @@
 
         const formattedDate = `${year}${month}${day}`;
 
-        document.getElementById('formattedDate').textContent = formattedDate;
+        formattedDate = document.getElementById('formattedDate').value;
     </script>
     
     <p id="myParagraph"></p>
@@ -91,7 +91,7 @@
                 return `LOG 0 1 0.25 8389583 0 0 0 \"C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Data\\${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast.dat\" \"${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast\" \"\" \"\"`;
             }
             
-            const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, Field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
+            const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
 
             let myString = contentA;
             document.getElementById("myParagraph").innerHTML = myString;
