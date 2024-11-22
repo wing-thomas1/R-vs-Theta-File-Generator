@@ -30,12 +30,12 @@
         document.getElementById('formattedDate').textContent = formattedDate;
     </script>
     
-
+    <p id="myParagraph"></p>
     
-    <textarea id="textContent" rows="10" cols="30" placeholder="Write something here..."></textarea><br>
     <button onclick="downloadFile()">Download</button>
 
     <script>
+
         function downloadFile() {
             const sampleField = document.getElementById('sampleField').value;
             const sampleID = document.getElementById('sampleID').value;
@@ -93,17 +93,19 @@
             
             const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, Field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
 
-            const blob = new Blob([contentA], { type: 'text/plain' });
+            let myString = contentA;
+            document.getElementById("myParagraph").innerHTML = myString;
+            // const blobA = new Blob([contentA], { type: 'text/plain' });
 
-            const title = `${formattedDate} FeRh ${sampleID} - R vs Theta - 400K, 200K, 150K - ${sampleField}T - fast`;
+            // const titleA = `${formattedDate} FeRh ${sampleID} - R vs Theta - 400K, 200K, 150K - ${sampleField}T - fast`;
 
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = title + ".txt";
+            // const a = document.createElement('a');
+            // a.href = URL.createObjectURL(blobA);
+            // a.download = titleA + ".txt";
 
-            a.click();
+            // a.click();
 
-            URL.revokeObjectURL(a.href);
+            // URL.revokeObjectURL(a.href);
 
 
 
