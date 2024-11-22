@@ -15,11 +15,19 @@
     
     <textarea id="sampleID" rows="1" cols="20" placeholder="Write sample ID here..."></textarea><br>
     <textarea id="sampleField" rows="1" cols="30" placeholder="Write Field (T) here..."></textarea><br>
+    
+    
     <p id="dateDisplay"></p>
-
     <script>
-        const currentDate = new Date();
-        document.getElementById('dateDisplay').textContent = currentDate.toDateString();
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2,'0');
+
+        const formattedDate = `${year}${month}${day}`;
+
+        document.getElementById('formattedDate').textContent = formattedDate;
     </script>
     
 
@@ -29,22 +37,81 @@
 
     <script>
         function downloadFile() {
-            // Get the content from the textarea
-            const content = document.getElementById('textContent').value;
+            // // Get the content from the textarea
+            // const content = document.getElementById('textContent').value;
 
-            // Create a Blob from the content
-            const blob = new Blob([content], { type: 'text/plain' });
+            // // Create a Blob from the content
+            // const blob = new Blob([content], { type: 'text/plain' });
 
-            // Create a link element
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'myfile.txt'; // Default filename
+            // // Create a link element
+            // const a = document.createElement('a');
+            // a.href = URL.createObjectURL(blob);
+            // a.download = 'myfile.txt'; // Default filename
 
-            // Programmatically click the link to trigger the download
-            a.click();
+            // // Programmatically click the link to trigger the download
+            // a.click();
 
-            // Cleanup
-            URL.revokeObjectURL(a.href);
+            // // Cleanup
+            // URL.revokeObjectURL(a.href);
+
+            const sampleField = document.getElementById('sampleField').value;
+            const sampleID = document.getElementById('sampleID').value;
+
+            
+            const measureString = "\nWAI WAITFOR 5 0 0 0 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nLOG 1 \"\"WAI WAITFOR 10 0 0 0 0 0";
+            const concludeString = "\nTMP TEMP 305.000000 12.000000 0\nWAI WAITFOR 10 1 0 0 0 0\nFLD FIELD 0.0 200.0 0 0\nMVP MOVE 90.000 0 0 \"11.970 Degrees/sec\"\nWAI\nWAITFOR 10 0 1 1 0 0";
+
+            function generalInitiate(field) {
+
+                const stringA = "MVP MOVE 370.000 0 0 \"11.970 Degrees/sec\"\nWAI WAITFOR 5 0 0 1 0 0\nBRG BRIDGE 3 1000.000 1000.000 1 1 95.0\nWAI WAITFOR 5 0 0 0 0 0\nTMP TEMP 400.000000 12.000000 0\nFLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 3600 1 1 0 0 0";
+
+                if(field === 8) {
+                    var stringB = "";
+                } else {
+                    var stringB = `\nFLD FIELD ${field * 10000}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0`; // AHHHHHHHH
+                }
+                    
+                return stringA + stringB;
+            }
+
+            function initiateMeasurement(field, temp) {
+                const stringA = "\nTMP TEMP 400.000000 12.000000 0";
+
+                if(field === 8) {
+                    var stringB = "\nWAI WAITFOR 1800 1 0 0 0 0";
+                } else {
+                    var stringB = "\nFLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 1800 1 1 0 0"
+                }
+
+                if (temp === 10) {
+                    var stringC = "\nTMP TEMP 20.000000 12.000000 0\nWAI WAITFOR 1800 1 0 0 0 0";
+                } else {
+                    var stringC = "";
+                }
+
+                const stringD = `\nTMP TEMP ${temp}.000000 12.000000 0\nWAI WAITFOR 3600 1 0 0 0 0`; // also ahhhhh
+                
+                if (field === 8) {
+                    var stringE = "";
+                } else {
+                    var stringE = `\nFLD FIELD ${field}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0`; // also ahhhhh
+                }
+
+                return stringA + stringB + stringC + stringD + stringE;
+            }
+
+            function chainString(id, date, field) {
+                return `\nCHN C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\Sequences\\${date} FeRh ${id} - R vs Theta - 100K, 50K, 10K - ${field}T.seq`;
+            }
+
+            function logString(id, date, field, temp) {
+                return `\nLOG 0 1 0.25 8389583 0 0 0 \"C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Data\\${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast.dat\" \"${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast\" \"\" \"\"`;
+            }
+            
+            const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, Field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
+
+            // const blob = new Blob([content])
+
         }
     </script>
 </body>
