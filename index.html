@@ -41,54 +41,54 @@
             const sampleID = document.getElementById('sampleID').value;
 
             
-            const measureString = "\nWAI WAITFOR 5 0 0 0 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nLOG 1 \"\"WAI WAITFOR 10 0 0 0 0 0";
-            const concludeString = "\nTMP TEMP 305.000000 12.000000 0\nWAI WAITFOR 10 1 0 0 0 0\nFLD FIELD 0.0 200.0 0 0\nMVP MOVE 90.000 0 0 \"11.970 Degrees/sec\"\nWAI\nWAITFOR 10 0 1 1 0 0";
+            const measureString = "WAI WAITFOR 5 0 0 0 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nLOG 1 \"\"WAI WAITFOR 10 0 0 0 0 0\n";
+            const concludeString = "TMP TEMP 305.000000 12.000000 0\nWAI WAITFOR 10 1 0 0 0 0\nFLD FIELD 0.0 200.0 0 0\nMVP MOVE 90.000 0 0 \"11.970 Degrees/sec\"\nWAI\nWAITFOR 10 0 1 1 0 0\n";
 
             function generalInitiate(field) {
 
-                const stringA = "MVP MOVE 370.000 0 0 \"11.970 Degrees/sec\"\nWAI WAITFOR 5 0 0 1 0 0\nBRG BRIDGE 3 1000.000 1000.000 1 1 95.0\nWAI WAITFOR 5 0 0 0 0 0\nTMP TEMP 400.000000 12.000000 0\nFLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 3600 1 1 0 0 0";
+                const stringA = "MVP MOVE 370.000 0 0 \"11.970 Degrees/sec\"\nWAI WAITFOR 5 0 0 1 0 0\nBRG BRIDGE 3 1000.000 1000.000 1 1 95.0\nWAI WAITFOR 5 0 0 0 0 0\nTMP TEMP 400.000000 12.000000 0\nFLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 3600 1 1 0 0 0\n";
 
                 if(field === 8) {
                     var stringB = "";
                 } else {
-                    var stringB = `\nFLD FIELD ${field * 10000}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0`; // AHHHHHHHH
+                    var stringB = `FLD FIELD ${field * 10000}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0\n`; // AHHHHHHHH
                 }
                     
                 return stringA + stringB;
             }
 
             function initiateMeasurement(field, temp) {
-                const stringA = "\nTMP TEMP 400.000000 12.000000 0";
+                const stringA = "TMP TEMP 400.000000 12.000000 0\n";
 
                 if(field === 8) {
-                    var stringB = "\nWAI WAITFOR 1800 1 0 0 0 0";
+                    var stringB = "WAI WAITFOR 1800 1 0 0 0 0\n";
                 } else {
-                    var stringB = "\nFLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 1800 1 1 0 0"
+                    var stringB = "FLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 1800 1 1 0 0\n";
                 }
 
                 if (temp === 10) {
-                    var stringC = "\nTMP TEMP 20.000000 12.000000 0\nWAI WAITFOR 1800 1 0 0 0 0";
+                    var stringC = "TMP TEMP 20.000000 12.000000 0\nWAI WAITFOR 1800 1 0 0 0 0\n";
                 } else {
                     var stringC = "";
                 }
 
-                const stringD = `\nTMP TEMP ${temp}.000000 12.000000 0\nWAI WAITFOR 3600 1 0 0 0 0`; // also ahhhhh
+                const stringD = `TMP TEMP ${temp}.000000 12.000000 0\nWAI WAITFOR 3600 1 0 0 0 0\n`; // also ahhhhh
                 
                 if (field === 8) {
                     var stringE = "";
                 } else {
-                    var stringE = `\nFLD FIELD ${field}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0`; // also ahhhhh
+                    var stringE = `FLD FIELD ${field}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0\n`; // also ahhhhh
                 }
 
                 return stringA + stringB + stringC + stringD + stringE;
             }
 
             function chainString(id, date, field) {
-                return `\nCHN C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\Sequences\\${date} FeRh ${id} - R vs Theta - 100K, 50K, 10K - ${field}T.seq`;
+                return `CHN C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\Sequences\\${date} FeRh ${id} - R vs Theta - 100K, 50K, 10K - ${field}T.seq`;
             }
 
             function logString(id, date, field, temp) {
-                return `\nLOG 0 1 0.25 8389583 0 0 0 \"C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Data\\${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast.dat\" \"${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast\" \"\" \"\"`;
+                return `LOG 0 1 0.25 8389583 0 0 0 \"C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Data\\${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast.dat\" \"${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast\" \"\" \"\"`;
             }
             
             const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, Field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
