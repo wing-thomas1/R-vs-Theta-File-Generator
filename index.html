@@ -37,23 +37,6 @@
 
     <script>
         function downloadFile() {
-            // // Get the content from the textarea
-            // const content = document.getElementById('textContent').value;
-
-            // // Create a Blob from the content
-            // const blob = new Blob([content], { type: 'text/plain' });
-
-            // // Create a link element
-            // const a = document.createElement('a');
-            // a.href = URL.createObjectURL(blob);
-            // a.download = 'myfile.txt'; // Default filename
-
-            // // Programmatically click the link to trigger the download
-            // a.click();
-
-            // // Cleanup
-            // URL.revokeObjectURL(a.href);
-
             const sampleField = document.getElementById('sampleField').value;
             const sampleID = document.getElementById('sampleID').value;
 
@@ -110,7 +93,42 @@
             
             const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, Field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
 
-            // const blob = new Blob([content])
+            const blob = new Blob([content], { type: 'text/plain' });
+
+            const title = `${formattedDate} FeRh ${sampleID} - R vs Theta - 400K, 200K, 150K - ${sampleField}T - fast`;
+
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = title + ".txt";
+
+            a.click();
+
+            URL.revokeObjectURL(a.href);
+
+
+
+
+
+
+
+
+            // // Get the content from the textarea
+            // const content = document.getElementById('textContent').value;
+
+            // // Create a Blob from the content
+            // const blob = new Blob([content], { type: 'text/plain' });
+
+            // // Create a link element
+            // const a = document.createElement('a');
+            // a.href = URL.createObjectURL(blob);
+            // a.download = 'myfile.txt'; // Default filename
+
+            // // Programmatically click the link to trigger the download
+            // a.click();
+
+            // // Cleanup
+            // URL.revokeObjectURL(a.href);
+
 
         }
     </script>
