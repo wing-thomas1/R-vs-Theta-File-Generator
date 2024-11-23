@@ -8,7 +8,7 @@
 <body>
     <h1>Generate and Download File</h1>
     
-    <h3>Choose a PPMS:</h3>
+    <h3>Choose a PPMS (DISCLAIMER: Doesn't actually currently do anything. Is tailored to Prof. Chaos):</h3>
     <label><input type="radio" name="choice" value="option1" checked> Prof. Chaos</label><br>
     <label><input type="radio" name="choice" value="option2"> Butters</label><br><br>
 
@@ -141,18 +141,22 @@
             
 
             const blobA = new Blob([contentA], { type: 'text/plain' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blobA);
-            a.download = titleA + '.seq';
-            a.click();
-            URL.revokeObjectURL(a.href);
+            const a1 = document.createElement('a');
+            a1.href = URL.createObjectURL(blobA);
+            a1.download = titleA + '.seq';
+            a1.style.display = 'none';
+            document.body.appendChild(a1);
+            a1.click();
+            document.body.removeChild(a1);
 
             const blobB = new Blob([contentB], { type: 'text/plain' });
-            const b = document.createElement('b');
-            b.href = URL.createObjectURL(blobB);
-            b.download = titleB + '.seq';
-            b.click();
-            URL.revokeObjectURL(b.href);
+            const a2 = document.createElement('a');
+            a2.href = URL.createObjectURL(blobB);
+            a2.download = titleB + '.seq';
+            a2.style.display = 'none';
+            document.body.appendChild(a2);
+            a2.click();
+            document.body.removeChild(a2);
         }
     </script>
 </body>
