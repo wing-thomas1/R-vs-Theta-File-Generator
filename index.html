@@ -8,16 +8,48 @@
 <body>
     <h1>Generate and Download File</h1>
     
-    <p>Choose a PPMS:</p>
-    <label><input type="radio" name="choice" value="option1"> Prof. Chaos</label><br>
-    <label><input type="radio" name="choice" value="option2"> Butters</label><br>
+    <h3>Choose a PPMS:</h3>
+    <label><input type="radio" name="choice" value="option1" checked> Prof. Chaos</label><br>
+    <label><input type="radio" name="choice" value="option2"> Butters</label><br><br>
+
+    <label for="sampleID">Choose a Sample:</label>
+    <select id="sampleID" onchange="toggleOtherInput(this.value)">
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="A3">A3</option>
+        <option value="A4">A4</option>
+        <option value="A5">A5</option>
+        <option value="A6">A6</option>
+        <option value="B3">B3</option>
+        <option value="B4">B4</option>
+        <option value="B5">B5</option>
+        <option value="B6">B6</option>
+        <option value="B7">B7</option>
+        <option value="B8">B8</option>
+        <option value="other">Other</option>
+    </select>
+    <input type="text" id="otherInput" placeholder="Please specify..." style="display: none;"><br><br>
     
-    
-    <textarea id="sampleID" rows="1" cols="20" placeholder="Write sample ID here..."></textarea><br>
-    <textarea id="sampleField" rows="1" cols="30" placeholder="Write Field (T) here..."></textarea><br>
-    
-    
-    <p id="dateDisplay"></p>
+    <script>
+        function toggleOtherInput(value) {
+            const otherInput = document.getElementById('otherInput');
+            if (value === 'other') {
+                otherInput.style.display = 'inline';
+            } else {
+                otherInput.style.display = 'none';
+            }
+        }
+    </script>
+
+    <label for="sampleField">Choose a Sample:</label>
+    <select id="sampleField">
+        <option value="8">8T</option>
+        <option value="4">4T</option>
+        <option value="2">2T</option>
+        <option value="1">1T</option>
+        <option value="0.2">0.2T</option>
+    </select>
+
     <script>
         const today = new Date();
 
@@ -26,99 +58,101 @@
         const day = String(today.getDate()).padStart(2,'0');
 
         const formattedDate = `${year}${month}${day}`;
-
-        formattedDate = document.getElementById('formattedDate').value;
     </script>
     
-    <p id="myParagraph"></p>
-    
-
-    <h1 id="heading"></h1>
-
-    <script>
-        let name = "Alice";
-        let greeting = `Hello, ${name}! Welcome to JavaScript.`;
-        document.getElementById("heading").innerText = greeting;
-    </script>
-
-
-
+    <pre id="myParagraph"></pre>
 
     
-    <button onclick="downloadFile()">Download</button>
+    <button onclick="downloadFile()">Download!!!</button>
 
     <script>
+        function generalInitiate(field) {
+
+            const stringA = "MVP MOVE 370.000 0 0 \"11.970 Degrees/sec\"\nWAI WAITFOR 5 0 0 1 0 0\nBRG BRIDGE 3 1000.000 1000.000 1 1 95.0\nWAI WAITFOR 5 0 0 0 0 0\nTMP TEMP 400.000000 12.000000 0\nFLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 3600 1 1 0 0 0\n";
+
+            const gaussField = 10000 * parseInt(field);
+            let stringB;
+            if (gaussField === 80000) {
+                stringB = "";
+            } else {
+                stringB = `FLD FIELD ${gaussField}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0\n`; // AHHHHHHHH
+            }
+                
+            return stringA + stringB;
+        }
+
+        function initiateMeasurement(field, temp) {
+            const stringA = "TEMP 400.000000 12.000000 0\n";
+            const gaussField = 10000*parseInt(field);
+
+            let stringB;
+            if(gaussField == 80000) {
+                stringB = "WAI WAITFOR 1800 1 0 0 0 0\n";
+            } else {
+                stringB = "FLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 1800 1 1 0 0\n";
+            }
+            
+            let stringC;
+            if (temp == 10) {
+                stringC = "TMP TEMP 20.000000 12.000000 0\nWAI WAITFOR 1800 1 0 0 0 0\n";
+            } else {
+                stringC = "";
+            }
+
+            const stringD = `TMP TEMP ${temp}.000000 12.000000 0\nWAI WAITFOR 3600 1 0 0 0 0\n`; // also ahhhhh
+
+            let stringE;
+            if (field == 8) {
+                stringE = "";
+            } else {
+                stringE = `FLD FIELD ${gaussField}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0\n`; // also ahhhhh
+            }
+
+            return stringA + stringB + stringC + stringD + stringE;
+        }
+
+        function chainString(id, date, field) {
+            return `CHN C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Sequences\\${date} FeRh ${id} - R vs Theta - 100K, 50, 10K - ${field}T.seq`;
+        }
+
+        function logString(id, date, field, temp) {
+            return `LOG 0 1 0.25 8389583 0 0 0 \"C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Data\\${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast.dat\" \"${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast\" \"\" \"\"`;
+        }
+
         function downloadFile() {
-            const sampleField = document.getElementById('sampleField').value;
             const sampleID = document.getElementById('sampleID').value;
+            const sampleField = parseInt(document.getElementById('sampleField').value);
 
             
             const measureString = "WAI WAITFOR 5 0 0 0 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nLOG 1 \"\"WAI WAITFOR 10 0 0 0 0 0\n";
             const concludeString = "TMP TEMP 305.000000 12.000000 0\nWAI WAITFOR 10 1 0 0 0 0\nFLD FIELD 0.0 200.0 0 0\nMVP MOVE 90.000 0 0 \"11.970 Degrees/sec\"\nWAI\nWAITFOR 10 0 1 1 0 0\n";
 
-            function generalInitiate(field) {
-
-                const stringA = "MVP MOVE 370.000 0 0 \"11.970 Degrees/sec\"\nWAI WAITFOR 5 0 0 1 0 0\nBRG BRIDGE 3 1000.000 1000.000 1 1 95.0\nWAI WAITFOR 5 0 0 0 0 0\nTMP TEMP 400.000000 12.000000 0\nFLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 3600 1 1 0 0 0\n";
-
-                if(field === 8) {
-                    var stringB = "";
-                } else {
-                    var stringB = `FLD FIELD ${field * 10000}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0\n`; // AHHHHHHHH
-                }
-                    
-                return stringA + stringB;
-            }
-
-            function initiateMeasurement(field, temp) {
-                const stringA = "TMP TEMP 400.000000 12.000000 0\n";
-
-                if(field === 8) {
-                    var stringB = "WAI WAITFOR 1800 1 0 0 0 0\n";
-                } else {
-                    var stringB = "FLD FIELD 80000.0 200.0 0 0\nWAI WAITFOR 1800 1 1 0 0\n";
-                }
-
-                if (temp === 10) {
-                    var stringC = "TMP TEMP 20.000000 12.000000 0\nWAI WAITFOR 1800 1 0 0 0 0\n";
-                } else {
-                    var stringC = "";
-                }
-
-                const stringD = `TMP TEMP ${temp}.000000 12.000000 0\nWAI WAITFOR 3600 1 0 0 0 0\n`; // also ahhhhh
-                
-                if (field === 8) {
-                    var stringE = "";
-                } else {
-                    var stringE = `FLD FIELD ${field}.0 200.0 0 0\nWAI WAITFOR 1800 0 1 0 0 0\n`; // also ahhhhh
-                }
-
-                return stringA + stringB + stringC + stringD + stringE;
-            }
-
-            function chainString(id, date, field) {
-                return `CHN C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\Sequences\\${date} FeRh ${id} - R vs Theta - 100K, 50K, 10K - ${field}T.seq`;
-            }
-
-            function logString(id, date, field, temp) {
-                return `LOG 0 1 0.25 8389583 0 0 0 \"C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Data\\${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast.dat\" \"${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast\" \"\" \"\"`;
-            }
-            
-            const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, field, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
-
-            let myString = contentA;
-            document.getElementById("myParagraph").innerHTML = myString;
-
-            const blobA = new Blob([contentA], { type: 'text/plain' });
-
+            const contentA = generalInitiate(sampleField) + logString(sampleID, formattedDate, sampleField, 400) + measureString + initiateMeasurement(sampleField, 200) + logString(sampleID, formattedDate, sampleField, 200) + measureString + initiateMeasurement(sampleField, 150) + logString(sampleID, formattedDate, sampleField, 150) + measureString + chainString(sampleID, formattedDate, sampleField);
             const titleA = `${formattedDate} FeRh ${sampleID} - R vs Theta - 400K, 200K, 150K - ${sampleField}T - fast`;
 
+            document.getElementById('myParagraph').innerText = contentA;
+
+            const blobA = new Blob([contentA], { type: 'text/plain' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blobA);
-            a.download = titleA + ".txt";
-
+            a.download = titleA + ".seq";
             a.click();
-
             URL.revokeObjectURL(a.href);
+        }
+    </script>
+
+    <br><button onclick="updateWords()">Update</button>
+
+    <h1 id="heading"></h1>
+
+    <script>
+        let name = "Alice";
+        // const sampleID = document.getElementById("sampleId").textContent;
+        
+        function updateWords() {
+            const sampleField = parseInt(document.getElementById('sampleField').value) + 1;
+            let greeting = `Hello, ${sampleField}! Welcome to JavaScript!`;
+            document.getElementById("heading").textContent = greeting;
         }
     </script>
 </body>
