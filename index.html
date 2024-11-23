@@ -32,10 +32,22 @@
     
     <p id="myParagraph"></p>
     
+
+    <h1 id="heading"></h1>
+
+    <script>
+        let name = "Alice";
+        let greeting = `Hello, ${name}! Welcome to JavaScript.`;
+        document.getElementById("heading").innerText = greeting;
+    </script>
+
+
+
+
+    
     <button onclick="downloadFile()">Download</button>
 
     <script>
-
         function downloadFile() {
             const sampleField = document.getElementById('sampleField').value;
             const sampleID = document.getElementById('sampleID').value;
