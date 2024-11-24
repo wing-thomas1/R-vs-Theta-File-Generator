@@ -50,6 +50,10 @@
         <option value="0.2">0.2T</option>
     </select>
 
+    <!-- <h3>Debug mode:</h3>
+    <label><input type="radio" name="debug" value="on" checked>On</label><br>
+    <label><input type="radio" name="debug" value="off">Off</label><br><br> -->
+
     <script>
         const today = new Date();
 
@@ -82,7 +86,7 @@
         }
 
         function initiateMeasurement(field, temp) {
-            const stringA = "TEMP 400.000000 12.000000 0\n";
+            const stringA = "TMP TEMP 400.000000 12.000000 0\n";
             const gaussField = parseInt(10000*field);
 
             let stringB;
@@ -112,20 +116,18 @@
         }
 
         function chainString(id, date, field) {
-            return `CHN C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Sequences\\${date} FeRh ${id} - R vs Theta - 100K, 50, 10K - ${field}T.seq`;
+            return `CHN C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Sequences\\${date} FeRh ${id} - R vs Theta - 100K, 50K, 10K - ${field}T - fast.seq`;
         }
 
         function logString(id, date, field, temp) {
             return `LOG 0 1 0.25 8389583 0 0 0 \"C:\\Users\\hmcph\\OneDrive\\Desktop\\FeRh Summer 2024\\R vs Theta\\${id}\\Data\\${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast.dat\" \"${date} FeRh ${id} - R vs Theta - ${temp}K - ${field}T - fast\" \"\" \"\"\n`;
         }
 
-        // function downloadFile() {
-        //     contentA = parseFloat('0.2');
-        //     document.getElementById('myParagraph').innerText = `${contentA}`;
-        // }
         function downloadFile() {
             const sampleID = document.getElementById('sampleID').value;
             const sampleField = parseFloat(document.getElementById('sampleField').value);
+
+            // const debugOn = document.getElementById('debug').value;
 
             
             const measureString = "WAI WAITFOR 5 0 0 0 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE -10.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nMVP MOVE 370.000 0 14 \"0.798 Degrees/sec\"\nWAI WAITFOR 10 0 0 1 0 0\nLOG 1 \"\"\nWAI WAITFOR 10 0 0 0 0 0\n";
